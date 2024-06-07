@@ -1,0 +1,572 @@
+{
+  "active": false,
+  "connections": {
+    "Chat Trigger": {
+      "main": [
+        [
+          {
+            "node": "Set max chunks to send to model",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Download file": {
+      "main": [
+        [
+          {
+            "node": "Add in metadata",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prepare chunks": {
+      "main": [
+        [
+          {
+            "node": "Answer the query based on chunks",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Add in metadata": {
+      "main": [
+        [
+          {
+            "node": "Add to Pinecone vector store",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Compose citations": {
+      "main": [
+        [
+          {
+            "node": "Generate response",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Embeddings OpenAI": {
+      "ai_embedding": [
+        [
+          {
+            "node": "Add to Pinecone vector store",
+            "type": "ai_embedding",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Answer the query based on chunks",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Embeddings OpenAI2": {
+      "ai_embedding": [
+        [
+          {
+            "node": "Get top chunks matching query",
+            "type": "ai_embedding",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Default Data Loader": {
+      "ai_document": [
+        [
+          {
+            "node": "Add to Pinecone vector store",
+            "type": "ai_document",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "Answer the query based on chunks",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set file URL in Google Drive": {
+      "main": [
+        [
+          {
+            "node": "Download file",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get top chunks matching query": {
+      "main": [
+        [
+          {
+            "node": "Prepare chunks",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set max chunks to send to model": {
+      "main": [
+        [
+          {
+            "node": "Get top chunks matching query",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Answer the query based on chunks": {
+      "main": [
+        [
+          {
+            "node": "Compose citations",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When clicking \"Execute Workflow\"": {
+      "main": [
+        [
+          {
+            "node": "Set file URL in Google Drive",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Recursive Character Text Splitter": {
+      "ai_textSplitter": [
+        [
+          {
+            "node": "Default Data Loader",
+            "type": "ai_textSplitter",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2024-06-05T10:29:13.680Z",
+  "id": "gKySruoAePbLv8vB",
+  "meta": null,
+  "name": "My workflow 3",
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "2709ffab-fe55-456d-82fa-9c8d38c78848",
+      "name": "When clicking \"Execute Workflow\"",
+      "type": "n8n-nodes-base.manualTrigger",
+      "position": [
+        293.0738059644673,
+        639.6107089467009
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "9b9107c5-68f0-457a-a8dd-b57f79d8753b",
+      "name": "Embeddings OpenAI",
+      "type": "@n8n/n8n-nodes-langchain.embeddingsOpenAi",
+      "position": [
+        1093.0738059644673,
+        859.6107089467009
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "content": "## 1. Setup: Fetch file from Google Drive, split it into chunks and insert into a vector database\nNote that running this part multiple times will insert multiple copies into your DB",
+        "height": 728.4168721167887,
+        "width": 1086.039382705461,
+        "color": 7
+      },
+      "id": "58d5e0b1-c07e-4d0c-b18d-a44108d39d02",
+      "name": "Sticky Note",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        460,
+        460
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "dataType": "binary",
+        "options": {
+          "metadata": {
+            "metadataValues": [
+              {
+                "name": "file_url",
+                "value": "={{ $json.file_url }}"
+              },
+              {
+                "name": "file_name",
+                "value": "={{ $('Add in metadata').item.json.file_name }}"
+              }
+            ]
+          }
+        }
+      },
+      "id": "d5f1a74b-7c54-4863-9e3f-1af8122d8e7d",
+      "name": "Default Data Loader",
+      "type": "@n8n/n8n-nodes-langchain.documentDefaultDataLoader",
+      "position": [
+        1273.0738059644673,
+        859.6107089467009
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "50025ff5-1b53-475f-b150-2aafef1c4c21",
+              "name": "file_url",
+              "type": "string",
+              "value": " https://drive.google.com/file/d/11Koq9q53nkk0F5Y8eZgaWJUVR03I4-MM/view"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "f07ddf72-b10a-4f52-aed8-cfebd71ae742",
+      "name": "Set file URL in Google Drive",
+      "type": "n8n-nodes-base.set",
+      "position": [
+        513.0738059644673,
+        639.6107089467009
+      ],
+      "typeVersion": 3.3
+    },
+    {
+      "parameters": {
+        "content": "# Try me out\n1. In Pinecone, create an index with 1536 dimensions and select it in the two vector store nodes\n2. Populate Pinecone by clicking the 'test workflow' button below\n3. Click the 'chat' button below and enter the following:\n\n_Which email provider does the creator of Bitcoin use?_",
+        "height": 350.7942096493649
+      },
+      "id": "6612e977-d267-43eb-a78c-e65ae3fd282d",
+      "name": "Sticky Note2",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -6.926194035532717,
+        539.6107089467009
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForEachItem",
+        "jsCode": "// Add a new field called 'myNewField' to the JSON of the item\n$input.item.json.file_name = $input.item.binary.data.fileName;\n$input.item.json.file_ext = $input.item.binary.data.fileExtension;\n$input.item.json.file_url = $('Set file URL in Google Drive').item.json.file_url\n\nreturn $input.item;"
+      },
+      "id": "9e4118a5-36c9-4c54-a526-11bf693a5aac",
+      "name": "Add in metadata",
+      "type": "n8n-nodes-base.code",
+      "position": [
+        933.0738059644673,
+        639.6107089467009
+      ],
+      "typeVersion": 2
+    },
+    {
+      "parameters": {
+        "operation": "download",
+        "fileId": {
+          "__rl": true,
+          "mode": "url",
+          "value": "={{ $json.file_url }}"
+        },
+        "options": {}
+      },
+      "id": "71635ef4-c909-4b15-932c-8004399f544c",
+      "name": "Download file",
+      "type": "n8n-nodes-base.googleDrive",
+      "position": [
+        713.0738059644673,
+        639.6107089467009
+      ],
+      "typeVersion": 3
+    },
+    {
+      "parameters": {},
+      "id": "8e8c96ac-ddcb-4fca-8455-caab22d9a04d",
+      "name": "Chat Trigger",
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "position": [
+        293.0738059644673,
+        1359.610708946701
+      ],
+      "webhookId": "1727c687-aed0-49cf-96af-e7796819fbb3",
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "jsCode": "let out = \"\"\nfor (const i in $input.all()) {\n  let itemText = \"--- CHUNK \" + i + \" ---\\n\"\n  itemText += $input.all()[i].json.document.pageContent + \"\\n\"\n  itemText += \"\\n\"\n  out += itemText\n}\n\nreturn {\n  'context': out\n};"
+      },
+      "id": "29964d19-49d9-43f6-8078-03449a5f3932",
+      "name": "Prepare chunks",
+      "type": "n8n-nodes-base.code",
+      "position": [
+        1113.0738059644673,
+        1359.610708946701
+      ],
+      "typeVersion": 2
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "5c2f1635-8de8-4c3b-ba8d-3942b831d33f",
+      "name": "Embeddings OpenAI2",
+      "type": "@n8n/n8n-nodes-langchain.embeddingsOpenAi",
+      "position": [
+        733.0738059644673,
+        1579.610708946701
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "e14bdfb9-f3c1-4aec-8a88-c2156e0bb7d1",
+      "name": "OpenAI Chat Model",
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "position": [
+        1353.0738059644673,
+        1579.610708946701
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "236047ff-75a2-47fd-b338-1e9763c4015e",
+              "name": "chunks",
+              "type": "number",
+              "value": 4
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "id": "c805169b-04fd-405f-856c-280a20fffdcd",
+      "name": "Set max chunks to send to model",
+      "type": "n8n-nodes-base.set",
+      "position": [
+        513.0738059644673,
+        1359.610708946701
+      ],
+      "typeVersion": 3.3
+    },
+    {
+      "parameters": {
+        "jsonSchema": "{\n  \"type\": \"object\",\n  \"properties\": {\n    \"answer\": {\n      \"type\": \"string\"\n    },\n    \"citations\": {\n      \"type\": \"array\",\n      \"items\": {\n        \"type\": \"number\"\n      }\n    }\n  }\n}"
+      },
+      "id": "cf4d6a61-67e5-4859-a436-d9a9c5526d1d",
+      "name": "Structured Output Parser",
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "position": [
+        1533.0738059644673,
+        1579.610708946701
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "67ecefcf-a30c-4cc4-89ca-b9b23edd6585",
+              "name": "citations",
+              "type": "array",
+              "value": "={{ $json.citations.map(i => '[' + $('Get top chunks matching query').all()[$json.citations].json.document.metadata.file_name + ', lines ' + $('Get top chunks matching query').all()[$json.citations].json.document.metadata['loc.lines.from'] + '-' + $('Get top chunks matching query').all()[$json.citations].json.document.metadata['loc.lines.to'] + ']') }}"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "id": "f2a6fc88-4b70-4670-ae4d-0143d1de7822",
+      "name": "Compose citations",
+      "type": "n8n-nodes-base.set",
+      "position": [
+        1713.0738059644673,
+        1359.610708946701
+      ],
+      "typeVersion": 3.3
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "d77956c4-0ff4-4c64-80c2-9da9d4c8ad34",
+              "name": "text",
+              "type": "string",
+              "value": "={{ $json.answer }} {{ $if(!$json.citations.isEmpty(), \"\\n\" + $json.citations.join(\"\"), '') }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "4f4a340c-f4b2-4f4f-9861-6bd88bd9ded1",
+      "name": "Generate response",
+      "type": "n8n-nodes-base.set",
+      "position": [
+        1933.0738059644673,
+        1359.610708946701
+      ],
+      "typeVersion": 3.3
+    },
+    {
+      "parameters": {
+        "content": "## 2. Chat with file, getting citations in reponse",
+        "height": 548.5086735412393,
+        "width": 1693.989843925635,
+        "color": 7
+      },
+      "id": "cc522b85-a08d-42b6-b8a4-accc5e476ced",
+      "name": "Sticky Note1",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        461.78967660744524,
+        1239.610708946701
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Use the following pieces of context to answer the question at the end. If you don't know the answer, just say that you don't know, don't try to make up an answer. Important: In your response, also include the the indexes of the chunks you used to generate the answer.\n\n{{ $json.context }}\n\nQuestion: {{ $(\"Chat Trigger\").first().json.chatInput }}\nHelpful Answer:",
+        "hasOutputParser": true
+      },
+      "id": "344b8eb4-1b1e-4d38-b58d-de069845909f",
+      "name": "Answer the query based on chunks",
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "position": [
+        1333.0738059644673,
+        1359.610708946701
+      ],
+      "typeVersion": 1.4
+    },
+    {
+      "parameters": {
+        "content": "Will fetch the Bitcoin whitepaper, but you can change this",
+        "height": 257.75985739596473,
+        "width": 179.58883583572606,
+        "color": 7
+      },
+      "id": "b98f83e3-73fd-4a06-ad6d-c89fbda9f5bb",
+      "name": "Sticky Note4",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        475.6420646785109,
+        550.1162561971246
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "mode": "load",
+        "pineconeIndex": {
+          "__rl": true,
+          "mode": "list",
+          "value": "test-index",
+          "cachedResultName": "test-index"
+        },
+        "prompt": "={{ $json.chatInput }}",
+        "topK": "={{ $json.chunks }}",
+        "options": {}
+      },
+      "id": "cb0234f0-2b1c-436d-bc13-a0d72cc336ce",
+      "name": "Get top chunks matching query",
+      "type": "@n8n/n8n-nodes-langchain.vectorStorePinecone",
+      "position": [
+        733.0738059644673,
+        1359.610708946701
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "mode": "insert",
+        "pineconeIndex": {
+          "__rl": true,
+          "mode": "list",
+          "value": "test-index",
+          "cachedResultName": "test-index"
+        },
+        "options": {}
+      },
+      "id": "5c6077cb-1ab0-402e-b251-236093b60588",
+      "name": "Add to Pinecone vector store",
+      "type": "@n8n/n8n-nodes-langchain.vectorStorePinecone",
+      "position": [
+        1153.0738059644673,
+        639.6107089467009
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "chunkSize": 3000,
+        "chunkOverlap": 200,
+        "options": {}
+      },
+      "id": "23dff7f5-d96c-4daa-a52b-ae9a8be94b40",
+      "name": "Recursive Character Text Splitter",
+      "type": "@n8n/n8n-nodes-langchain.textSplitterRecursiveCharacterTextSplitter",
+      "position": [
+        1273.0738059644673,
+        1019.6107089467009
+      ],
+      "typeVersion": 1
+    }
+  ],
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2024-06-05T10:29:13.680Z",
+  "versionId": "f6fb4bd1-e2a3-4781-a79a-0007e43c0766"
+}

@@ -481,6 +481,19 @@
       ],
       "typeVersion": 1,
       "id": "c96e9b21-23a1-4d51-bfb5-8c3ee6df672d"
+    },
+    {
+      "parameters": {
+        "operation": "compress"
+      },
+      "id": "92a528ef-f027-4c70-ab51-c7c2e713a42c",
+      "name": "Compression",
+      "type": "n8n-nodes-base.compression",
+      "typeVersion": 1.1,
+      "position": [
+        820,
+        20
+      ]
     }
   ],
   "pinData": {},
@@ -488,6 +501,6 @@
   "staticData": null,
   "tags": [],
   "triggerCount": 0,
-  "updatedAt": "2024-06-07T07:08:36.000Z",
-  "versionId": "861fc703-4f65-45f8-8739-fd20e614537d"
+  "updatedAt": "2024-06-07T07:24:43.000Z",
+  "versionId": "834359a4-b669-441c-a85c-c3814ff244a3"
 }

@@ -1,0 +1,493 @@
+{
+  "active": false,
+  "connections": {
+    "new": {
+      "main": [
+        [
+          {
+            "node": "GitHub Create",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "same": {
+      "main": [
+        [
+          {
+            "node": "OneAtATime",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "isDiffOrNew",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "GitHub": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Globals": {
+      "main": [
+        [
+          {
+            "node": "N8N Workflows",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "dataArray": {
+      "main": [
+        [
+          {
+            "node": "OneAtATime",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "different": {
+      "main": [
+        [
+          {
+            "node": "GitHub Edit",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OneAtATime": {
+      "main": [
+        [
+          {
+            "node": "GitHub",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "N8N Workflow Detail",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "GitHub Edit": {
+      "main": [
+        [
+          {
+            "node": "OneAtATime",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "isDiffOrNew": {
+      "main": [
+        [
+          {
+            "node": "github_status",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Daily @ 20:00": {
+      "main": [
+        [
+          {
+            "node": "Globals",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "GitHub Create": {
+      "main": [
+        [
+          {
+            "node": "OneAtATime",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "N8N Workflows": {
+      "main": [
+        [
+          {
+            "node": "dataArray",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "github_status": {
+      "main": [
+        [
+          {
+            "node": "same",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "different",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "new",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "N8N Workflow Detail": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "On clicking 'execute'": {
+      "main": [
+        [
+          {
+            "node": "Globals",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2024-06-07T07:08:16.964Z",
+  "id": "fNutbtSev5rkvwkb",
+  "meta": {
+    "templateId": "817",
+    "templateCredsSetupCompleted": true
+  },
+  "name": "[June 7] Save your workflows into a GitHub repository",
+  "nodes": [
+    {
+      "parameters": {},
+      "name": "On clicking 'execute'",
+      "type": "n8n-nodes-base.manualTrigger",
+      "position": [
+        380,
+        240
+      ],
+      "typeVersion": 1,
+      "id": "77b6b2b2-87aa-40be-81f8-3e373673302f"
+    },
+    {
+      "parameters": {
+        "functionCode": "const newItems = [];\nfor (item of items[0].json.data) {\n  newItems.push({json: item});\n}\nreturn newItems;"
+      },
+      "name": "dataArray",
+      "type": "n8n-nodes-base.function",
+      "position": [
+        830,
+        390
+      ],
+      "typeVersion": 1,
+      "id": "070c801e-4502-4d23-8dc4-3f520e11f115"
+    },
+    {
+      "parameters": {
+        "url": "http://localhost:8443/rest/workflows",
+        "options": {}
+      },
+      "name": "N8N Workflows",
+      "type": "n8n-nodes-base.httpRequest",
+      "position": [
+        680,
+        390
+      ],
+      "typeVersion": 1,
+      "id": "00b57e36-6ddd-46fc-9c26-82bcbe02946d"
+    },
+    {
+      "parameters": {
+        "resource": "file",
+        "operation": "get",
+        "owner": "={{$node[\"Globals\"].json[\"repo\"][\"owner\"]}}",
+        "repository": "={{$node[\"Globals\"].json[\"repo\"][\"name\"]}}",
+        "filePath": "={{$node[\"Globals\"].json[\"repo\"][\"path\"]}}{{$json[\"name\"]}}.json",
+        "asBinaryProperty": false,
+        "additionalParameters": {}
+      },
+      "name": "GitHub",
+      "type": "n8n-nodes-base.github",
+      "position": [
+        1180,
+        220
+      ],
+      "typeVersion": 1,
+      "alwaysOutputData": true,
+      "id": "5b3bdfb8-75f6-4799-9dfe-b2229234eeb7",
+      "credentials": {
+        "githubApi": {
+          "id": "XjiIw4hSLCg7wIJJ",
+          "name": "Ayesha GitHub account"
+        }
+      },
+      "continueOnFail": true
+    },
+    {
+      "parameters": {},
+      "name": "Merge",
+      "type": "n8n-nodes-base.merge",
+      "position": [
+        1380,
+        390
+      ],
+      "typeVersion": 1,
+      "id": "6a590d0f-e75c-42d8-b7b3-6831e400559d"
+    },
+    {
+      "parameters": {
+        "url": "=http://localhost:8443/rest/workflows/{{$json[\"id\"]}}",
+        "options": {}
+      },
+      "name": "N8N Workflow Detail",
+      "type": "n8n-nodes-base.httpRequest",
+      "position": [
+        1180,
+        550
+      ],
+      "typeVersion": 1,
+      "id": "2b88a93b-7913-4d2a-9d53-82331c4b6935"
+    },
+    {
+      "parameters": {
+        "dataType": "string",
+        "value1": "={{$json[\"github_status\"]}}",
+        "rules": {
+          "rules": [
+            {
+              "value2": "same"
+            },
+            {
+              "value2": "different",
+              "output": 1
+            },
+            {
+              "value2": "new",
+              "output": 2
+            }
+          ]
+        }
+      },
+      "name": "github_status",
+      "type": "n8n-nodes-base.switch",
+      "position": [
+        1680,
+        390
+      ],
+      "typeVersion": 1,
+      "id": "1a18d908-931a-4e34-8436-8453877839e5"
+    },
+    {
+      "parameters": {},
+      "name": "same",
+      "type": "n8n-nodes-base.noOp",
+      "position": [
+        1880,
+        220
+      ],
+      "typeVersion": 1,
+      "id": "fc2f1f28-dc57-412c-a89d-8679cc0560d1"
+    },
+    {
+      "parameters": {},
+      "name": "different",
+      "type": "n8n-nodes-base.noOp",
+      "position": [
+        1880,
+        390
+      ],
+      "typeVersion": 1,
+      "id": "7fb8ae1d-1e52-4a7a-9049-245b782f3025"
+    },
+    {
+      "parameters": {},
+      "name": "new",
+      "type": "n8n-nodes-base.noOp",
+      "position": [
+        1880,
+        550
+      ],
+      "typeVersion": 1,
+      "id": "ccbaf82a-d2e4-4e8d-8af3-f3d250931f1b"
+    },
+    {
+      "parameters": {
+        "resource": "file",
+        "operation": "edit",
+        "owner": "={{$node[\"Globals\"].json[\"repo\"][\"owner\"]}}",
+        "repository": "={{$node[\"Globals\"].json[\"repo\"][\"name\"]}}",
+        "filePath": "={{$node[\"Globals\"].json[\"repo\"][\"path\"]}}{{$node[\"N8N Workflow Detail\"].json[\"data\"][\"name\"]}}.json",
+        "fileContent": "={{$node[\"isDiffOrNew\"].json[\"n8n_data_stringy\"]}}",
+        "commitMessage": "=[N8N Backup] {{$node[\"N8N Workflow Detail\"].json[\"data\"][\"name\"]}}.json ({{$json[\"github_status\"]}})"
+      },
+      "name": "GitHub Edit",
+      "type": "n8n-nodes-base.github",
+      "position": [
+        2080,
+        270
+      ],
+      "typeVersion": 1,
+      "id": "7d4e9244-bb41-4909-96e4-266c36e8b35d",
+      "credentials": {
+        "githubApi": {
+          "id": "XjiIw4hSLCg7wIJJ",
+          "name": "Ayesha GitHub account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "file",
+        "owner": "={{$node[\"Globals\"].json[\"repo\"][\"owner\"]}}",
+        "repository": "={{$node[\"Globals\"].json[\"repo\"][\"name\"]}}",
+        "filePath": "={{$node[\"Globals\"].json[\"repo\"][\"path\"]}}{{$node[\"N8N Workflow Detail\"].json[\"data\"][\"name\"]}}.json",
+        "fileContent": "={{$node[\"isDiffOrNew\"].json[\"n8n_data_stringy\"]}}",
+        "commitMessage": "=[N8N Backup] {{$node[\"N8N Workflow Detail\"].json[\"data\"][\"name\"]}}.json ({{$json[\"github_status\"]}})"
+      },
+      "name": "GitHub Create",
+      "type": "n8n-nodes-base.github",
+      "position": [
+        2080,
+        550
+      ],
+      "typeVersion": 1,
+      "id": "3540c700-24a1-4716-a7b1-fec17fe853bf",
+      "credentials": {
+        "githubApi": {
+          "id": "XjiIw4hSLCg7wIJJ",
+          "name": "Ayesha GitHub account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "functionCode": "// File Returned with Content\nif (Object.keys(items[0].json).includes(\"content\")) {\n  // Get JSON Objects\n  var origWorkflow = eval(\"(\"+Buffer.from(items[0].json.content, 'base64').toString()+\")\");\n  var n8nWorkflow = (items[1].json.data);\n  \n  // Order JSON Objects\n  var orderedOriginal = {}\n  var orderedActual = {}\n  \n  Object.keys(origWorkflow).sort().forEach(function(key) {\n    orderedOriginal[key] = origWorkflow[key];\n  });\n  \n  Object.keys(n8nWorkflow).sort().forEach(function(key) {\n    orderedActual[key] = n8nWorkflow[key];\n  });\n  \n  // Determine Difference\n  if ( JSON.stringify(orderedOriginal) === JSON.stringify(orderedActual) ) {\n    items[0].json.github_status = \"same\";\n    items[0].json.content_decoded = orderedOriginal;\n  } else {\n    items[0].json.github_status = \"different\";\n    items[0].json.content_decoded = orderedOriginal;\n    items[0].json.n8n_data_stringy = JSON.stringify(orderedActual, null, 2);\n  }\n// No File Returned / New Workflow\n} else {\n  // Order JSON Object\n  var n8nWorkflow = (items[1].json.data);\n  var orderedActual = {}\n  Object.keys(n8nWorkflow).sort().forEach(function(key) {\n    orderedActual[key] = n8nWorkflow[key];\n  });\n  \n  // Proper Formatting\n  items[0].json.github_status = \"new\";\n  items[0].json.n8n_data_stringy = JSON.stringify(orderedActual, null, 2);\n}\n\n// Return Items\nreturn items;"
+      },
+      "name": "isDiffOrNew",
+      "type": "n8n-nodes-base.function",
+      "position": [
+        1530,
+        390
+      ],
+      "typeVersion": 1,
+      "id": "13d67595-f2a8-4b4e-be0f-7b59b1ab87d2"
+    },
+    {
+      "parameters": {
+        "triggerTimes": {
+          "item": [
+            {
+              "hour": 20,
+              "minute": 11
+            }
+          ]
+        }
+      },
+      "name": "Daily @ 20:00",
+      "type": "n8n-nodes-base.cron",
+      "position": [
+        380,
+        540
+      ],
+      "typeVersion": 1,
+      "id": "e666deb9-f0b8-44a1-9279-5f5c18b0a321"
+    },
+    {
+      "parameters": {
+        "batchSize": 1,
+        "options": {}
+      },
+      "name": "OneAtATime",
+      "type": "n8n-nodes-base.splitInBatches",
+      "position": [
+        980,
+        390
+      ],
+      "typeVersion": 1,
+      "id": "f796e6b4-7312-4e0a-9b63-c69ab1f17be2"
+    },
+    {
+      "parameters": {
+        "values": {
+          "string": [
+            {
+              "name": "repo.owner",
+              "value": "octocat"
+            },
+            {
+              "name": "repo.name",
+              "value": "Hello-World"
+            },
+            {
+              "name": "repo.path",
+              "value": "my-team/n8n/workflows/"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "name": "Globals",
+      "type": "n8n-nodes-base.set",
+      "position": [
+        530,
+        390
+      ],
+      "typeVersion": 1,
+      "id": "c96e9b21-23a1-4d51-bfb5-8c3ee6df672d"
+    }
+  ],
+  "pinData": {},
+  "settings": {},
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2024-06-07T07:08:36.000Z",
+  "versionId": "861fc703-4f65-45f8-8739-fd20e614537d"
+}

@@ -1,0 +1,143 @@
+{
+  "active": false,
+  "connections": {
+    "Code": {
+      "main": [
+        [
+          {
+            "node": "UPDATE",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Monday": {
+      "main": [
+        [
+          {
+            "node": "Date & Time",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Date & Time": {
+      "main": [
+        [
+          {
+            "node": "Code",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Error Trigger": {
+      "main": [
+        [
+          {
+            "node": "Monday",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2024-06-05T11:05:26.062Z",
+  "id": "XzJ0OB5p8MB1f7IR",
+  "meta": {
+    "templateId": "2074"
+  },
+  "name": "Send n8n automation errors to a Monday.com board",
+  "nodes": [
+    {
+      "parameters": {
+        "resource": "boardItem",
+        "boardId": "1382091189",
+        "groupId": "topics",
+        "name": "={{ \"\".concat($('Error Trigger').last().json.execution.id) }}",
+        "additionalFields": {}
+      },
+      "id": "25a95fba-9367-48ca-b7a3-5ab1fb701869",
+      "name": "Monday",
+      "type": "n8n-nodes-base.mondayCom",
+      "position": [
+        620,
+        240
+      ],
+      "notesInFlow": true,
+      "typeVersion": 1,
+      "notes": "CREATE ERROR ITEM"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "5fb18856-cd59-4f57-9e72-c637a206fa41",
+      "name": "Date & Time",
+      "type": "n8n-nodes-base.dateTime",
+      "position": [
+        840,
+        240
+      ],
+      "typeVersion": 2
+    },
+    {
+      "parameters": {},
+      "id": "66baa154-b421-4942-99e9-f00f6870b3fa",
+      "name": "Error Trigger",
+      "type": "n8n-nodes-base.errorTrigger",
+      "position": [
+        380,
+        240
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "jsCode": "\nconsole.log($('Error Trigger').last().json.execution)\nstr = escape ($('Error Trigger').last().json.execution.error.stack )\nreturn { \"stack\": str}"
+      },
+      "id": "34347458-7509-4e08-a501-1cee4a307bb7",
+      "name": "Code",
+      "type": "n8n-nodes-base.code",
+      "position": [
+        1040,
+        240
+      ],
+      "notesInFlow": true,
+      "typeVersion": 2,
+      "notes": "GET STACKTRACE"
+    },
+    {
+      "parameters": {
+        "resource": "boardItem",
+        "operation": "changeMultipleColumnValues",
+        "boardId": "1382091189",
+        "itemId": "={{ $('Monday').last().json.id }}",
+        "columnValues": "={ \"column_id_for_workflow_name (text)\" : \"{{  $('Error Trigger').item.json.workflow.name }}\",\n\"column_id_for_error_stack (long text)\" : \"{{ $('Code').last().json.stack}}\",\n\"column_id_for_error_message (text)\": \"{{ $('Error Trigger').item.json.execution.error.message }}\",\n\"column_id_for_date (text)\": \"{{ $('Date & Time').last().json.currentDate }}\"\n}\n"
+      },
+      "id": "92b6e47b-1c34-40eb-9f9a-57e197528c86",
+      "name": "UPDATE",
+      "type": "n8n-nodes-base.mondayCom",
+      "position": [
+        1280,
+        240
+      ],
+      "notesInFlow": true,
+      "typeVersion": 1,
+      "notes": "POPULUATE MONDAY ITEM"
+    }
+  ],
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "updatedAt": "2024-06-05T11:05:26.062Z",
+  "versionId": "70508ea0-6b69-405c-a1a8-6ff93dce7ae2"
+}
